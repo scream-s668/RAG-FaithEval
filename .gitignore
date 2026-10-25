@@ -5,6 +5,7 @@ agent/secret_key.py
 __pycache__/
 .pytest_cache/
 *.pyc
+.idea/
 
 # Chroma 本地数据库文件
 chroma.sqlite3
