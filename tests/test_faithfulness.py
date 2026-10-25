@@ -2,9 +2,11 @@ import os
 import pytest
 from audit.claim_evaluator import evaluate_faithfulness
 from rag_pipeline.retriever import Retriever
+from agent.llm_client import HAS_REAL_API_KEY
 
 RUN_LOCAL_TESTS=os.environ.get("RUN_LOCAL_TESTS", "true") == "true"
 
+@pytest.mark.skipif(not HAS_REAL_API_KEY,reason="CI 环境无大模型 API Key，跳过忠实度裁判测试")
 def test_faithfulness_normal():
     """测试正常情况：模型完全基于上下文回答，得分必须高"""
     print("\n--- 正在测试：正常回答的忠实度 ---")
@@ -16,6 +18,7 @@ def test_faithfulness_normal():
 
     assert result["score"]>=8,f"正常回答得分异常：{result['score']}"
 
+@pytest.mark.skipif(not HAS_REAL_API_KEY,reason="CI 环境无大模型 API Key，跳过幻觉裁判测试")
 def test_faithfulness_hallucination_caught():
     """测试幻觉情况：模型自己瞎编，裁判必须抓出来打 0 分"""
     print("\n--- 正在测试：抓出幻觉回答 ---")
