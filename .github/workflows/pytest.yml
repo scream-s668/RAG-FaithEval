@@ -1,0 +1,27 @@
+name: Python Pytest CI
+
+on: [push, pull_request]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Set up Python 3.12
+      uses: actions/setup-python@v4
+      with:
+        python-version: '3.12'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        # 必须把所有依赖都装上，否则 import 会报错
+        pip install pytest openai pyyaml chromadb sentence-transformers
+
+    - name: Run Pytest
+      # 此处不要配置 RUN_LOCAL_TESTS 环境变量
+      # 这样测试代码里的 skipif 就会生效，自动跳过下载模型的测试
+      run: |
+        pytest tests/test_faithfulness.py -s -v

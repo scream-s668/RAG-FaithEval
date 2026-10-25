@@ -1,0 +1,11 @@
+# 本地密钥文件
+agent/secret_key.py
+
+# Python 缓存
+__pycache__/
+.pytest_cache/
+*.pyc
+
+# Chroma 本地数据库文件
+chroma.sqlite3
+.chroma/
